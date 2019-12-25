@@ -1,50 +1,73 @@
 import React from 'react';
 import { View, FlatList, Text, StyleSheet } from 'react-native';
 
-import NavButton from '../components/NavButon';
+import NavButton from '../components/buttons/NavButon';
+import { text, position, borders, paddings, margins, positions } from '../components/styles';
 
 class HomeScreen extends React.Component {
   state = {
     travels: [
-      { id: 1, country: 'Brasil', state: 'RJ', city: 'Niterói', arrival: '01/12/2019', departure: '06/12/2019' },
+      { id: 1, country: 'Brasil', state: 'RJ', city: 'Rio de Janeiro', arrival: '01/12/2019', departure: '06/12/2019' },
+      { id: 2, country: 'Brasil', state: 'MS', city: 'Campo Gramde', arrival: '08/12/2019', departure: '13/12/2019' },
+      { id: 3, country: 'Brasil', state: 'SP', city: 'São Paulo', arrival: '15/12/2019', departure: '20/12/2019' },
+      { id: 4, country: 'Brasil', state: 'PR', city: 'Curitiba', arrival: '22/12/2019', departure: '27/12/2019' },
     ]
   };
   render() {
     return (
-      <View>
+      <View style={[styles.homeView, position.relative]}>
         <FlatList
           data={this.state.travels}
           keyExtractor={item => item.id}
           renderItem={({ item }) => {
             return (
-              <NavButton style={styles.container} navTo={() => console.log('foi')}>   
-                <Text style={[styles.text, styles.city]}>{item.city} - {item.state}</Text>
-              
-                <Text style={[styles.text, styles.separator]}>|</Text>            
+              <NavButton
+                style={[styles.homeItems, styles.container]}
+                navTo={() => console.log('foi')}>   
+                <View style={styles.city}>
+                  <Text style={text.gray}>{item.city} - {item.state}</Text>
+                </View>
 
-                <Text style={[styles.text, styles.period]}>{item.arrival} | {item.departure}</Text>
+                <Text style={[styles.period, text.gray, text.center]}>{item.arrival} - {item.departure}</Text>
               </NavButton>
             );
           }}
         />
+
+        <NavButton 
+          style={[styles.homeItems, styles.addTravel]} 
+          navTo={() => console.log('foi')}>   
+          <Text style={[styles.addTravelTxt, text.center, text.bold]}>+</Text>
+        </NavButton>
       </View>
     );
   }
 }
 
+const homeStyles = {
+  addTravel: {
+    width: 96,
+    border: "#c3efff",
+    text: "#70acff"
+  }
+}
+
 const styles = StyleSheet.create({
+  homeView: {
+    ...paddings({bottom: 85})
+  },
+  homeItems: {
+    ...paddings(10)
+  },
   container: {
     boxShadow: "1px 1px 3px #777",
     flexGrow: 1,
-    margin: 5,
-    padding: 10,
+    ...margins(6),
     alignItems: "center",
     flexDirection: "row",
   },
-  text: {
-    color: "#333333"
-  },
   city: {
+    ...borders({color: "#ccc", side: 'right'}),
     width: "39%"
   },
   separator: {
@@ -52,7 +75,23 @@ const styles = StyleSheet.create({
   },
   period: {
     width: "60%",
-    textAlign: "center"
+  },
+  addTravel: {
+    boxShadow: "1px 1px 3px " + homeStyles.addTravel.text,
+    ...borders({color: homeStyles.addTravel.border}),
+    ...positions({
+      type: 'absolute', 
+      width: homeStyles.addTravel.width, 
+      centralized: "horizontal", 
+      corners: {
+        bottom: 5,
+        left: 1000
+      }
+    }),
+    width: homeStyles.addTravel.width + "%",
+  },
+  addTravelTxt: {
+    color: homeStyles.addTravel.text
   }
 });
 

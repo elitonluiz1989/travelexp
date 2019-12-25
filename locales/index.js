@@ -28,7 +28,6 @@ I18n.translations = {
 // Função responsável por verificar se o idioma atual do divice está sendo suportado, caso não ele irá setar como 'ptBR-BR'
 const setLanguageToI18n = () => {
   const language = getLanguageByDevice()
-  console.log('LANGUAGE: ', language);
   const translateNormalize = normalizeTranslate[language]
   const iHaveThisLanguage = I18n.translations.hasOwnProperty(translateNormalize)
   iHaveThisLanguage
