@@ -1,4 +1,3 @@
-import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -8,15 +7,19 @@ import { color } from './components/styles';
 import HomeScreen from './pages/HomeScreen';
 import TravelScreen from './pages/TravelScreen';
 
+const styles = {
+  header: {
+    backgroundColor: '#efefef',
+    textTransform: "capitalize"
+  }
+};
+
 const AppNavigator = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
       title: translate('travels'),
-      headerStyle: {
-        backgroundColor: 'tansparent',
-        boxShadow: "0px 0px 0px"
-      },
+      headerStyle: styles.header,
       headerTintColor: color.gray
     } 
   },
@@ -24,10 +27,7 @@ const AppNavigator = createStackNavigator({
     screen: TravelScreen,
     navigationOptions: {
       title: translate('travel'),
-      headerStyle: {
-        backgroundColor: 'tansparent',
-        boxShadow: "0px 0px 0px"
-      },
+      headerStyle: styles.header,
       headerTintColor: color.gray
     } 
   },
@@ -35,10 +35,7 @@ const AppNavigator = createStackNavigator({
     screen: TravelScreen,
     navigationOptions: {
       title: translate('travel'),
-      headerStyle: {
-        backgroundColor: 'tansparent',
-        boxShadow: "0px 0px 0px"
-      },
+      headerStyle: styles.header,
       headerTintColor: color.gray
     } 
   }
