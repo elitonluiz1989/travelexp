@@ -1,4 +1,9 @@
 {
     "travel": "Viagem",
-    "travels": "Viagens"
+    "travels": "Viagens",
+    "destination": "destino",
+    "period": "período",
+    "arrival": "chegada",
+    "departure": "saída",
+    "no records": "sem registros"
 }

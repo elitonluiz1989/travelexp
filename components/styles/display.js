@@ -9,6 +9,15 @@ const display = StyleSheet.create({
     }
 });
 
+const flex = StyleSheet.create({
+    row: {
+        flexDirection: "row"
+    },
+    column: {
+        flexDirection: "column"
+    }
+});
+
 const position = StyleSheet.create({
     relative: {
         position: "relative"
@@ -18,4 +27,4 @@ const position = StyleSheet.create({
     }
 });
 
-export {display, position};
+export {display, flex, position};

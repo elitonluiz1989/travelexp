@@ -23,7 +23,7 @@ class HomeScreen extends React.Component {
             return (
               <NavButton
                 style={[styles.homeItems, styles.container]}
-                navTo={() => console.log('foi')}>   
+                navTo={() => this.props.navigation.navigate('Travel', {id: item.id})}>   
                 <View style={styles.city}>
                   <Text style={text.gray}>{item.city} - {item.state}</Text>
                 </View>
@@ -36,7 +36,7 @@ class HomeScreen extends React.Component {
 
         <NavButton 
           style={[styles.homeItems, styles.addTravel]} 
-          navTo={() => console.log('foi')}>   
+          navTo={() => this.props.navigation.navigate('AddTravel')}>   
           <Text style={[styles.addTravelTxt, text.center, text.bold]}>+</Text>
         </NavButton>
       </View>
