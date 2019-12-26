@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, Text, StyleSheet } from 'react-native';
+import { View, FlatList, Text, StyleSheet, Platform } from 'react-native';
 
 import NavButton from '../components/buttons/NavButon';
 import { text, position, borders, paddings, margins, positions } from '../components/styles';
@@ -60,7 +60,11 @@ const styles = StyleSheet.create({
     ...paddings(10)
   },
   container: {
-    boxShadow: "1px 1px 3px #777",
+    ...Platform.select({
+      android: {
+        elevation: 1
+      }
+    }),
     flexGrow: 1,
     ...margins(6),
     alignItems: "center",
@@ -77,15 +81,18 @@ const styles = StyleSheet.create({
     width: "60%",
   },
   addTravel: {
-    boxShadow: "1px 1px 3px " + homeStyles.addTravel.text,
+    ...Platform.select({
+      android: {
+        elevation: 1
+      }
+    }),
     ...borders({color: homeStyles.addTravel.border}),
     ...positions({
       type: 'absolute', 
       width: homeStyles.addTravel.width, 
       centralized: "horizontal", 
       corners: {
-        bottom: 5,
-        left: 1000
+        bottom: 5
       }
     }),
     width: homeStyles.addTravel.width + "%",
