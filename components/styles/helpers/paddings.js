@@ -3,7 +3,7 @@ export default function(padding) {
 
     if (typeof padding == 'number') {
         customPadding.padding = padding;
-    } if (typeof padding == 'object') {
+    } else if (typeof padding == 'object') {
         if (padding.top) {
             customPadding.paddingTop = padding.top;
         }

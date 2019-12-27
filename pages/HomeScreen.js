@@ -2,7 +2,8 @@ import React from 'react';
 import { View, FlatList, Text, StyleSheet, Platform } from 'react-native';
 
 import NavButton from '../components/buttons/NavButon';
-import { text, position, borders, paddings, margins, positions } from '../components/styles';
+import { text, position, mixBorders, mixPaddings, mixMargins, mixPositions, app, $colors, mixBorderRadius } from '../components/styles';
+import { translate } from '../locales';
 
 class HomeScreen extends React.Component {
   state = {
@@ -15,20 +16,31 @@ class HomeScreen extends React.Component {
   };
   render() {
     return (
-      <View style={[styles.homeView, position.relative]}>
+      <View style={[
+        app.screen, 
+        styles.homeView, 
+        position.relative
+      ]}>
         <FlatList
           data={this.state.travels}
           keyExtractor={item => item.id}
           renderItem={({ item }) => {
             return (
               <NavButton
-                style={[styles.homeItems, styles.container]}
+                style={[
+                  styles.homeItems, 
+                  styles.container
+                ]}
                 navTo={() => this.props.navigation.navigate('Travel', {id: item.id})}>   
                 <View style={styles.city}>
                   <Text style={text.gray}>{item.city} - {item.state}</Text>
                 </View>
 
-                <Text style={[styles.period, text.gray, text.center]}>{item.arrival} - {item.departure}</Text>
+                <Text style={[
+                  styles.period, 
+                  text.gray, 
+                  text.center
+                ]}>{item.arrival} - {item.departure}</Text>
               </NavButton>
             );
           }}
@@ -37,14 +49,19 @@ class HomeScreen extends React.Component {
         <NavButton 
           style={[styles.homeItems, styles.addTravel]} 
           navTo={() => this.props.navigation.navigate('AddTravel')}>   
-          <Text style={[styles.addTravelTxt, text.center, text.bold]}>+</Text>
+          <Text style={[
+            styles.addTravelTxt, 
+            text.center, 
+            text.bold,
+            text.capitalize
+          ]}>{translate('add')}</Text>
         </NavButton>
       </View>
     );
   }
 }
 
-const homeStyles = {
+const $vars = {
   addTravel: {
     width: 96,
     border: "#c3efff",
@@ -54,10 +71,12 @@ const homeStyles = {
 
 const styles = StyleSheet.create({
   homeView: {
-    ...paddings({bottom: 85})
+    ...mixPaddings({bottom: 85})
   },
   homeItems: {
-    ...paddings(10)
+    backgroundColor: $colors.white,
+    ...mixBorderRadius(5),
+    ...mixPaddings(15)
   },
   container: {
     ...Platform.select({
@@ -66,12 +85,12 @@ const styles = StyleSheet.create({
       }
     }),
     flexGrow: 1,
-    ...margins(6),
+    ...mixMargins(6),
     alignItems: "center",
     flexDirection: "row",
   },
   city: {
-    ...borders({color: "#ccc", side: 'right'}),
+    ...mixBorders({color: "#ccc", side: 'right'}),
     width: "39%"
   },
   separator: {
@@ -81,24 +100,20 @@ const styles = StyleSheet.create({
     width: "60%",
   },
   addTravel: {
-    ...Platform.select({
-      android: {
-        elevation: 1
-      }
-    }),
-    ...borders({color: homeStyles.addTravel.border}),
-    ...positions({
+    backgroundColor: $colors.white,
+    ...mixBorders({color: $colors.mainDarker}),
+    ...mixPositions({
       type: 'absolute', 
-      width: homeStyles.addTravel.width, 
+      width: $vars.addTravel.width, 
       centralized: "horizontal", 
       corners: {
         bottom: 5
       }
     }),
-    width: homeStyles.addTravel.width + "%",
+    width: $vars.addTravel.width + "%",
   },
   addTravelTxt: {
-    color: homeStyles.addTravel.text
+    color: $colors.mainDarker
   }
 });
 

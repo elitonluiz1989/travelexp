@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import color from './color'
+import { $colors } from './variables'
 
 export default StyleSheet.create({
   center: {
@@ -18,22 +18,22 @@ export default StyleSheet.create({
     textAlign: "auto"
   },
   black: {
-    color: color.black
+    color: $colors.black
   },
   white: {
-    color: color.white
+    color: $colors.white
   },
   gray: {
-    color: color.gray
+    color: $colors.gray
   },
   red: {
-    color: color.red
+    color: $colors.red
   },
   green: {
-    color: color.green
+    color: $colors.green
   },
   blue: {
-    color: color.blue
+    color: $colors.blue
   },
   bold: {
     fontWeight: "bold"

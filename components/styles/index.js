@@ -1,9 +1,25 @@
-import color from './color';
-import {display, flex, position} from './display';
+import { $colors, $sizes } from './variables'
+import { display, flex, position } from './display';
 import text from './text';
-import borders from './helpers/borders';
-import margins from './helpers/margins';
-import paddings from './helpers/paddings';
-import positions from './helpers/positions';
 
-export { color, display, flex, position, text, borders, margins, paddings, positions };
+import {mixBorders, mixBorderRadius} from './helpers/borders';
+import mixMargins from './helpers/margins';
+import mixPaddings from './helpers/paddings';
+import mixPositions from './helpers/positions';
+
+import app from './app'
+
+export { 
+  $colors, 
+  $sizes, 
+  display, 
+  flex, 
+  position, 
+  text, 
+  mixBorders, 
+  mixBorderRadius,
+  mixMargins, 
+  mixPaddings, 
+  mixPositions,
+  app
+};
