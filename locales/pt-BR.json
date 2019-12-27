@@ -5,5 +5,7 @@
     "period": "período",
     "arrival": "chegada",
     "departure": "saída",
-    "no records": "sem registros"
+    "no records": "sem registros",
+    "dayly total": "total diário",
+    "add": "adicionar"
 }

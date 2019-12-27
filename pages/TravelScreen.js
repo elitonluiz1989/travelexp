@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, SectionList } from 'react-native';
 import { translate } from '../locales';
-import { FlatList } from 'react-native-gesture-handler';
-import { text, color, margins, paddings, borders } from '../components/styles';
-import { flex } from '../components/styles/display';
+import NavButton from '../components/buttons/NavButon';
+import { text, color, flex, margins, paddings, borders } from '../components/styles';
 
 class TravelScreen extends React.Component {
   state = {
@@ -16,57 +15,59 @@ class TravelScreen extends React.Component {
     travelExpenses: [{
       date: '01/12/2019',
       data: [
-        {id: 1, description: 'uber', value: 12.25},
-        {id: 2, description: 'uber', value: 50.37},
-        {id: 3, description: 'dinner', value: 42.35}
+        {id: 1, description: 'uber', type: 'tranport', value: 12.25},
+        {id: 2, description: 'uber', type: 'tranport', value: 50.37},
+        {id: 3, description: 'dinner', type: 'feeding', value: 42.35}
       ]
     },
     {
       date: '02/12/2019',
       data: [
-        {id: 4, description: 'uber', value: 12.25},
-        {id: 5, description: 'lunch', value: 42.35},
-        {id: 6, description: 'uber', value: 50.37},
-        {id: 7, description: 'dinner', value: 42.35}
+        {id: 4, description: 'uber', type: 'tranport', value: 12.25},
+        {id: 5, description: 'lunch', type: 'feeding', value: 42.35},
+        {id: 6, description: 'uber', type: 'tranport', value: 50.37},
+        {id: 7, description: 'dinner', type: 'feeding', value: 42.35}
       ]
     },
     {
       date: '03/12/2019',
       data: [
-        {id: 8, description: 'uber', value: 12.25},
-        {id: 9, description: 'lunch', value: 42.35},
-        {id: 10, description: 'uber', value: 50.37},
-        {id: 11, description: 'dinner', value: 42.35}
+        {id: 8, description: 'uber', type: 'tranport', value: 12.25},
+        {id: 9, description: 'lunch', type: 'feeding', value: 42.35},
+        {id: 10, description: 'uber', type: 'tranport', value: 50.37},
+        {id: 11, description: 'dinner', type: 'feeding', value: 42.35}
       ]
     },
     {
       date: '04/12/2019',
       data: [
-        {id: 12, description: 'uber', value: 12.25},
-        {id: 13, description: 'lunch', value: 42.35},
-        {id: 14, description: 'uber', value: 50.37},
-        {id: 15, description: 'dinner', value: 42.35}
+        {id: 12, description: 'uber', type: 'tranport', value: 12.25},
+        {id: 13, description: 'lunch', type: 'feeding', value: 42.35},
+        {id: 14, description: 'uber', type: 'tranport', value: 50.37},
+        {id: 15, description: 'dinner', type: 'feeding', value: 42.35}
       ]
     },
     {
       date: '05/12/2019',
       data: [
-        {id: 16, description: 'uber', value: 12.25},
-        {id: 17, description: 'lunch', value: 42.35},
-        {id: 18, description: 'uber', value: 50.37},
-        {id: 19, description: 'dinner', value: 42.35}
+        {id: 16, description: 'uber', type: 'tranport', value: 12.25},
+        {id: 17, description: 'lunch', type: 'feeding', value: 42.35},
+        {id: 18, description: 'uber', type: 'tranport', value: 50.37},
+        {id: 19, description: 'dinner', type: 'feeding', value: 42.35}
       ]
     },
     {
       date: '06/12/2019',
       data: [
-        {id: 20, description: 'uber', value: 12.25},
-        {id: 21, description: 'lunch', value: 42.35},
-        {id: 22, description: 'uber', value: 50.37},
-        {id: 23, description: 'dinner', value: 42.35}
+        {id: 20, description: 'uber', type: 'tranport', value: 12.25},
+        {id: 21, description: 'lunch', type: 'feeding', value: 42.35},
+        {id: 22, description: 'uber', type: 'tranport', value: 50.37},
+        {id: 23, description: 'dinner', type: 'feeding', value: 42.35}
       ]
     }]
   };
+
+  getDailyTotal = data => data.reduce((amount, item) => amount + parseFloat(item.value), 0);
 
   render() {
     const travelId = this.props.navigation.getParam('id') || 1;
@@ -91,17 +92,34 @@ class TravelScreen extends React.Component {
           </View>
 
           <SectionList
-            style={[styles.expenses, styles.block]}
+            style={[styles.block]}
             sections={this.state.travelExpenses}
             renderItem={({item}) =>
-              <View style={[styles.expense, flex.row]}>
-                <Text style={[styles.expenseText, text.capitalize]}>{item.description}</Text>
-                <Text style={[styles.expenseText, text.capitalize]}>{item.value}</Text>
+              <View style={[styles.expenseBorderedLeft, styles.expenseBorderedRight]}>
+                <View style={[styles.expense, styles.expenseBorderedBottom, flex.row]}>
+                  <Text style={[styles.expenseText, styles.expenseBorderedRight, text.capitalize]}>{item.description}</Text>
+                  <Text style={[styles.expenseText, styles.expenseBorderedRight, styles.expenseTextMiddle, text.capitalize]}>{item.type}</Text>
+                  <Text style={[styles.expenseValue, text.capitalize, text.right]}>{item.value}</Text>
+                </View>
               </View>
-
             }
-            renderSectionHeader={({section}) => 
-              <Text style={[styles.expenseHeader, styles.title, text.center]}>{section.date}</Text>
+            renderSectionHeader={({section}) =>
+              <View style={[styles.expenseBorderedRight, styles.expenseBorderedTop, styles.expenseBorderedLeft]}>
+                <Text style={[styles.expenseHeader, styles.title, text.center]}>{section.date}</Text>
+              </View>
+            }
+            renderSectionFooter={(item)=>
+              <View style={[styles.expenseFooter, styles.expenseBorderedRight, styles.expenseBorderedBottom, styles.expenseBorderedLeft]}>
+                <View style={[styles.expense, flex.row]}>
+                  <Text style={[styles.expenseDailyTotal, styles.expenseBorderedRight, text.right, text.capitalize]}>{translate('dayly total')}</Text>
+                  <Text style={[styles.expenseValue, text.right]}>{this.getDailyTotal(item.section.data)}</Text>
+                </View>
+
+                <NavButton  
+                  navTo={() => this.props.navigation.push('AddTravel')}>   
+                  <Text style={[styles.expenseBtn, text.center, text.bold, text.white, text.capitalize]}>{translate('add')}</Text>
+                </NavButton>
+              </View>
             }
             keyExtractor={(item, index) => index}
           />
@@ -118,7 +136,9 @@ class TravelScreen extends React.Component {
 }
 
 const travelStyles = {
-  color: "#5380c9"
+  color: "#5380c9",
+  colorDark: "#3e65a3",
+  colorDarker: "#36568a"
 }
 
 const styles = StyleSheet.create({
@@ -127,7 +147,7 @@ const styles = StyleSheet.create({
     ...paddings(5)
   },
   title: {
-    backgroundColor: "#36568a"
+    backgroundColor: travelStyles.colorDarker
   },
   titleSeparator: {
     ...borders({color: color.white, side: "top"}),
@@ -140,22 +160,49 @@ const styles = StyleSheet.create({
   titleText: {
     width: "70%"
   },
-  expenses: {
-    ...borders({color: travelStyles.color}),
-  },
   expenseHeader: {
     width: "30%",
-    ...margins({top: 5}),
+    ...margins({top: 5, left: 5}),
     ...paddings(5),
     color: color.white
   },
   expense: {
-    ...borders({color: travelStyles.color, side: "bottom"}),
-    ...margins({bottom: 5}),
+    ...margins(5),
     ...paddings(5)
   },
+  expenseBorderedTop: {
+    ...borders({color: travelStyles.color, side: "top"}),
+  }, 
+  expenseBorderedLeft: {
+    ...borders({color: travelStyles.color, side: "left"}),
+  },
+  expenseBorderedRight: {
+    ...borders({color: travelStyles.color, side: 'right'})
+  },
+  expenseBorderedBottom: {
+    ...borders({color: travelStyles.color, side: 'bottom'})
+  },
   expenseText: {
-    width: "50%"
+    width: "40%"
+  },
+  expenseTextMiddle: {
+    ...paddings({left: 5})
+  },
+  expenseValue: {
+    width: "20%"
+  },
+  expenseDailyTotal: {
+    width: "80%",
+    ...paddings({right: 5})
+  },
+  expenseFooter: {
+    ...margins({bottom: 15})
+  },
+  expenseBtn: {
+    backgroundColor: travelStyles.colorDark,
+    ...margins({top: 0, right: "20%", bottom: 5, left: "20%"}),
+    ...paddings({top: 5, right: 0, bottom: 5, left: 0}),
+    width: "60%"
   }
 });
 
