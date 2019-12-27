@@ -23,7 +23,7 @@ class HomeScreen extends React.Component {
       ]}>
         <FlatList
           data={this.state.travels}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => {
             return (
               <NavButton

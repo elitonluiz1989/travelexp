@@ -199,7 +199,7 @@ class TravelScreen extends React.Component {
                 </NavButton>
               </View>
             }
-            keyExtractor={(item, index) => index}
+            keyExtractor={(item, index) => index.toString()}
           />
         </View>
       );
