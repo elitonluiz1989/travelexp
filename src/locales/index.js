@@ -1,5 +1,5 @@
 
-import * as RNLocalize from "react-native-localize";
+//import * as RNLocalize from "react-native-localize";
 import I18n from 'i18n-js'
 import ptBR from './pt-BR.json'
 
@@ -15,7 +15,8 @@ const normalizeTranslate = {
 
 // Função responsável por adquirir o idioma utilizado no device
 const getLanguageByDevice = () => {
-  return RNLocalize.getLocales()[0].languageTag;
+  return 'pt-BR';
+  //return RNLocalize.getLocales()[0].languageTag;
 }
 
 // Aqui setamos os idiomas que o I18N irá dar suporte
