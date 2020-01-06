@@ -2,25 +2,59 @@ import React from 'react';
 import { View, FlatList, Text, StyleSheet, Platform } from 'react-native';
 
 import NavButton from '../components/buttons/NavButon';
-import { text, position, mixBorders, mixPaddings, mixMargins, mixPositions, app, $colors, mixBorderRadius } from '../components/styles';
+import { text, position, mixBorders, mixPaddings, mixMargins, mixPositions, app, $colors, mixBorderRadius, display } from '../components/styles';
 import { translate } from '../locales';
+import Travel from '../models/Travel';
 
 class HomeScreen extends React.Component {
-  state = {
-    travels: [
-      { id: 1, country: 'Brasil', state: 'RJ', city: 'Rio de Janeiro', arrival: '01/12/2019', departure: '06/12/2019' },
-      { id: 2, country: 'Brasil', state: 'MS', city: 'Campo Gramde', arrival: '08/12/2019', departure: '13/12/2019' },
-      { id: 3, country: 'Brasil', state: 'SP', city: 'São Paulo', arrival: '15/12/2019', departure: '20/12/2019' },
-      { id: 4, country: 'Brasil', state: 'PR', city: 'Curitiba', arrival: '22/12/2019', departure: '27/12/2019' },
-    ]
-  };
+  constructor() {
+    super();
+
+    this.state = {
+      db: null,
+      messages: {
+        success: null,
+        error: null
+      },
+      travels: []
+    }
+  }
+
+  componentDidMount() {
+    this.getTravels();
+  }
+
+  async getTravels() {
+    let travels = await new Travel().all();
+    
+    if (travels.hasErrors()) {
+      this.setState({
+        messages: { error: travels.errors }
+      });
+
+      return;
+    }
+
+    this.setState({
+      travels: travels.items()
+    });
+  }
+
   render() {
     return (
       <View style={[
-        app.screen, 
-        styles.homeView, 
+        app.screen,
+        styles.homeView,
         position.relative
       ]}>
+        <View style={ this.state.messages.error !== null ?  app.message :  display.none }>
+          <Text>{this.state.messages.error}</Text>
+        </View>
+
+        <View style={ this.state.travels !== null && this.state.travels.length === 0 ?  app.message :  display.none }>
+          <Text style={ [text.center, text.capitalize] }>{ translate('no records') }</Text>
+        </View>
+
         <FlatList
           data={this.state.travels}
           keyExtractor={item => item.id.toString()}
@@ -28,17 +62,17 @@ class HomeScreen extends React.Component {
             return (
               <NavButton
                 style={[
-                  styles.homeItems, 
+                  styles.homeItems,
                   styles.container
                 ]}
-                navTo={() => this.props.navigation.navigate('Travel', {id: item.id})}>   
+                navTo={() => this.props.navigation.navigate('Travel', { id: item.id })}>
                 <View style={styles.city}>
                   <Text style={text.gray}>{item.city} - {item.state}</Text>
                 </View>
 
                 <Text style={[
-                  styles.period, 
-                  text.gray, 
+                  styles.period,
+                  text.gray,
                   text.center
                 ]}>{item.arrival} - {item.departure}</Text>
               </NavButton>
@@ -46,12 +80,12 @@ class HomeScreen extends React.Component {
           }}
         />
 
-        <NavButton 
-          style={[styles.homeItems, styles.addTravel]} 
-          navTo={() => this.props.navigation.navigate('AddTravel')}>   
+        <NavButton
+          style={[styles.homeItems, styles.addTravel]}
+          navTo={() => this.props.navigation.navigate('AddTravel')}>
           <Text style={[
-            styles.addTravelTxt, 
-            text.center, 
+            styles.addTravelTxt,
+            text.center,
             text.bold,
             text.capitalize
           ]}>{translate('add')}</Text>
@@ -71,7 +105,7 @@ const $vars = {
 
 const styles = StyleSheet.create({
   homeView: {
-    ...mixPaddings({bottom: 85})
+    ...mixPaddings({ bottom: 85 })
   },
   homeItems: {
     backgroundColor: $colors.white,
@@ -90,7 +124,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   city: {
-    ...mixBorders({color: "#ccc", side: 'right'}),
+    ...mixBorders({ color: "#ccc", side: 'right' }),
     width: "39%"
   },
   separator: {
@@ -101,11 +135,11 @@ const styles = StyleSheet.create({
   },
   addTravel: {
     backgroundColor: $colors.white,
-    ...mixBorders({color: $colors.mainDarker}),
+    ...mixBorders({ color: $colors.mainDarker }),
     ...mixPositions({
-      type: 'absolute', 
-      width: $vars.addTravel.width, 
-      centralized: "horizontal", 
+      type: 'absolute',
+      width: $vars.addTravel.width,
+      centralized: "horizontal",
       corners: {
         bottom: 5
       }

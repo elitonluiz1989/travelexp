@@ -1,4 +1,4 @@
-
+import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -8,6 +8,7 @@ import { $colors } from './components/styles';
 
 import HomeScreen from './pages/HomeScreen';
 import TravelScreen from './pages/TravelScreen';
+import Database from './database/Database';
 
 const styles = {
   header: {
@@ -52,4 +53,17 @@ const AppNavigator = createStackNavigator({
   initialRouteName: 'Home',
 });
 
-export default createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends Component {
+  componentDidMount() {
+    let db = new Database();
+    db.init();
+  }
+
+  render() {
+    return(
+     <AppContainer />
+    );
+  }
+}

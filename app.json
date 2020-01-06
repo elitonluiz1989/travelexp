@@ -1,4 +1,8 @@
 {
   "name": "travelexp",
-  "displayName": "travelexp"
+  "displayName": "travelexp",
+  "database": {
+    "name": "travelexp.db",
+    "location": "default"
+  }
 }
