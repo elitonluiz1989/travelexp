@@ -15,8 +15,6 @@ export default class Model extends Database {
   errors = [];
 
   constructor() {
-    super();
-
     this.query = new Query();
   }
 
@@ -70,8 +68,12 @@ export default class Model extends Database {
     return result;    
   }
 
-  save() {
+  async save() {
+    let result = null;
     let query = new Query();
+    let fields = [];
+    let values = [];
+    
     if (this[this.primary] !== null && this[this.primary] > 0) {
       let setValues = [];
       Object.keys(this).forEach(property => {
@@ -82,8 +84,6 @@ export default class Model extends Database {
 
       query.update();
     } else {
-      let fields = [];
-      let values = [];
       Object.keys(this).forEach(property => {
         if (this[property] !== null) {
           fields.push(property);
@@ -91,19 +91,20 @@ export default class Model extends Database {
         }
       });
 
-      query.insert()
-            .into(this.table)
-            .fields(fields)
-            .values(fields);
+      let query = query.insert()
+                      .into(this.table)
+                      .fields(fields);      
+
+      console.log(query)
     }
     
-    await this.execute(query.make())
+    /*await this.execute(query.make(), values)
               .then(success => {
                 result = success.rowsAffected;
               })
               .catch(error => {
                 result = selectErrorHandler(error);
-              });
+              });*/
 
     return result;    
   }

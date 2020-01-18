@@ -6,9 +6,10 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { translate } from './locales';
 import { $colors } from './components/styles';
 
+import { DatabaseInitialize } from './database/init';
+
 import HomeScreen from './pages/HomeScreen';
 import TravelScreen from './pages/TravelScreen';
-import Database from './database/Database';
 
 const styles = {
   header: {
@@ -57,8 +58,7 @@ const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends Component {
   componentDidMount() {
-    let db = new Database();
-    db.init();
+    DatabaseInitialize();
   }
 
   render() {

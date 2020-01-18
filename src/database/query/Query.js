@@ -24,6 +24,12 @@ const whereArgsHandler = args => {
   }
 }
 
+const statementInitialization = (_this, type) => {
+  _this.query.type = type;
+  _this.query.structure = null;
+  _this.query.content = [];
+}
+
 export default class Query {
   query = {
     type: null,
@@ -133,6 +139,29 @@ export default class Query {
     let exsQuery = callback();
     this.query.content.push(`${starQuery} ${exsQuery}`);
   }
+
+  /** INSERT statement */
+  insert() {
+    statementInitialization(this, 'insert');
+
+    this.query.content.push('INSERT')
+  }
+
+  into(table) {
+    this.query.content.push(`INTO ${table}`);
+  }
+
+  fields(fields, values) {
+    this.query.content.push(`(${join.join(', ')})`);
+
+    let valuesStr = Array(fields.length).join('?, ');
+    if (typeof values === 'array') {
+      valuesStr = values.join(', ');
+    }
+
+    this.query.content.push(`VALUES (${valuesStr})`)
+  }
+  
 
   make() {
     return this.query.content.join(' ');
