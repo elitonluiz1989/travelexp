@@ -6,6 +6,9 @@ let db = null;
 let inTransaction = false;
 
 export default class Database {
+
+  constructor() {}
+
   open() {    
     db = openDatabase(
       { ...database },
@@ -44,14 +47,15 @@ export default class Database {
         await this.execute('BEGIN TRANSACTION');
         console.log('Transaction openned.');
         
-        await action();
+        let result = await action();
 
         await this.execute('COMMIT');
         console.log('Transaction commited.')
 
-        resolve(true);
+        resolve(result);
       } catch(ex) {
-        await this.execute('ROLLBACK')
+        await this.execute('ROLLBACK');
+
         console.log('Transaction rollbacked.')
 
         reject(ex);
