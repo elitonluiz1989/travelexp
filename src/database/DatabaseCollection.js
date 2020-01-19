@@ -19,6 +19,10 @@ export default class DatabaseCollection {
     return items;
   }
 
+  count() {
+    return items.length;
+  }
+
   [Symbol.iterator] = function* () {
     for (let key in this.items) {
       yield [key, this.items[key]] // yield [key, value] pair

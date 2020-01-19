@@ -2,7 +2,9 @@ import Database from "./Database";
 import Schema from "./query/Schema.js";
 import Query from "./query/Query.js"
 
-export const DatabaseInitialize = () => {
+import DatabaseSeed from './seeds';
+
+export const DatabaseInitialize = async () => {
   let db = new Database();
 
   await db.transaction(async () => {
@@ -15,10 +17,10 @@ export const DatabaseInitialize = () => {
         .and('name', `'${table.name}'`)
         .make();
 
-      let tableExists = await this.execute(tableExistsQuery);
+      let tableExists = await db.execute(tableExistsQuery);
 
       if (tableExists.rows.length === 0) {
-        this.execute(table.query)
+        db.execute(table.query)
           .then(() => console.log(`Table ${table.name} was created.`))
           .catch(error => {
             console.log(`There was an error and the table ${table.name} was not created. Error: ${error.message}.`);
@@ -26,4 +28,6 @@ export const DatabaseInitialize = () => {
       }
     }
   });
+
+  await DatabaseSeed();
 }
