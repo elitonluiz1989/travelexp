@@ -1,10 +1,9 @@
 import Columns from "./Columns";
-import definingTables from "../tables.js";
+import DatabaseTables from "../tables.js";
 import Query from "./Query";
 
 export default class Schema {
   static tables = [];
-  static seeds = [];
 
   static table(name, instruction) {
     columns = new Columns()
@@ -24,23 +23,9 @@ export default class Schema {
     return query;
   }
 
-  static seed(instruction)
-  {
-    query = new Query();
-    instruction(query);
-
-    this.seeds.push({})
-
-  }
-
   static getTables() {
-    definingTables();
+    DatabaseTables();
 
     return this.tables;
-  }
-
-  static getSeeds()
-  {
-    return this.seeds;
   }
 }

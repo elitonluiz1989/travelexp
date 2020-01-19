@@ -144,25 +144,27 @@ export default class Query {
   insert() {
     statementInitialization(this, 'insert');
 
-    this.query.content.push('INSERT')
+    this.query.content.push('INSERT');
+
+    return this;
   }
 
   into(table) {
     this.query.content.push(`INTO ${table}`);
+
+    return this;
   }
 
-  fields(fields, values) {
-    this.query.content.push(`(${join.join(', ')})`);
+  fields(fields) {
+    this.query.content.push(`(${fields.join(', ')})`);
+    let values = '?, '.repeat(fields.length);
+    values = values.substr(0, values.length - 2);
 
-    let valuesStr = Array(fields.length).join('?, ');
-    if (typeof values === 'array') {
-      valuesStr = values.join(', ');
-    }
+    this.query.content.push(`VALUES (${values})`);
 
-    this.query.content.push(`VALUES (${valuesStr})`)
-  }
+    return this;
+  }  
   
-
   make() {
     return this.query.content.join(' ');
   }

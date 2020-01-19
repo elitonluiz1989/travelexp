@@ -1,6 +1,7 @@
 import Query from "./query/Query";
 import Database from "./Database";
 import DatabaseCollection from "./DatabaseCollection";
+import { modelPropsHandler } from "./helpers";
 
 const selectErrorHandler = error => {
   let result = new DatabaseCollection();
@@ -9,18 +10,22 @@ const selectErrorHandler = error => {
   return result;
 };
 
+let query = null;
+
 export default class Model extends Database {
   table = null;
-  query = null;
+  atributtes = [];
   errors = [];
 
   constructor() {
-    this.query = new Query();
+    super();
+
+    query = new Query();
   }
 
   /* SELECT */
   select() {
-    return this.query.select();
+    return query.select();
   }
 
   async all() {
@@ -68,9 +73,28 @@ export default class Model extends Database {
     return result;    
   }
 
+  async create(data) {
+    return await this.transaction(async () => {
+      let queryStr = null;
+      let result = [];
+
+      data.forEach((model, key) => {
+          let {fields, values} = modelPropsHandler(model);
+
+          queryStr = query.insert()
+                          .into(this.table)
+                          .fields(fields)
+                          .make();
+          
+          result[key] = await this.execute(queryStr, values);
+      });
+
+      return result;
+    });
+  }
+
   async save() {
     let result = null;
-    let query = new Query();
     let fields = [];
     let values = [];
     
@@ -82,7 +106,7 @@ export default class Model extends Database {
         }
       });
 
-      query.update();
+      result = query.update();
     } else {
       Object.keys(this).forEach(property => {
         if (this[property] !== null) {
@@ -91,11 +115,11 @@ export default class Model extends Database {
         }
       });
 
-      let query = query.insert()
+      result = query.insert()
                       .into(this.table)
                       .fields(fields);      
 
-      console.log(query)
+      console.log(result)
     }
     
     /*await this.execute(query.make(), values)
